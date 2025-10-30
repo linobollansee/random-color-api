@@ -1,0 +1,31 @@
+{
+  "name": "random-color-api",
+  "version": "1.0.0",
+  "description": "Random Color Generator API with Express and TypeScript",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "keywords": [
+    "color",
+    "api",
+    "express",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.8.6",
+    "@types/cors": "^2.8.17",
+    "ts-node": "^10.9.2",
+    "nodemon": "^3.1.7"
+  }
+}
