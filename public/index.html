@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Color Generator</title>
+  </head>
+  <body>
+    <h1>Random Color Generator</h1>
+
+    <div>
+      <p>
+        HEX: <span id="hex">#000000</span>
+        <button onclick="copy('hex')">Copy</button>
+      </p>
+      <p>
+        RGB: <span id="rgb">rgb(0,0,0)</span>
+        <button onclick="copy('rgb')">Copy</button>
+      </p>
+      <p>
+        HSL: <span id="hsl">hsl(0,0%,0%)</span>
+        <button onclick="copy('hsl')">Copy</button>
+      </p>
+    </div>
+
+    <button onclick="getColor()">Generate New Color</button>
+
+    <script>
+      async function getColor() {
+        const response = await fetch("http://localhost:3000/api/color/random");
+        const color = await response.json();
+
+        document.getElementById("hex").textContent = color.hex;
+        document.getElementById("rgb").textContent = color.rgb;
+        document.getElementById("hsl").textContent = color.hsl;
+        document.body.style.backgroundColor = color.hex;
+      }
+
+      function copy(format) {
+        const text = document.getElementById(format).textContent;
+        navigator.clipboard.writeText(text);
+        alert("Copied!");
+      }
+
+      getColor();
+    </script>
+  </body>
+</html>
