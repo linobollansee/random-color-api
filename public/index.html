@@ -1,51 +1,142 @@
 <!DOCTYPE html>
+<!--
+  =====================================================
+  RANDOM COLOR GENERATOR - FRONTEND
+  =====================================================
+  
+  Willkommen zur Frontend-Seite des Color Generators!
+  Diese HTML-Seite demonstriert:
+  - Asynchrone API-Aufrufe mit fetch()
+  - DOM-Manipulation mit JavaScript
+  - Moderne Browser-APIs (Clipboard)
+  
+  Lernziele:
+  - Verständnis von Client-Server-Kommunikation
+  - Arbeiten mit dem Document Object Model (DOM)
+  - Asynchrone Programmierung in JavaScript
+  - User Experience (UX) Verbesserungen
+-->
 <html>
   <head>
     <title>Color Generator</title>
   </head>
   <body>
+    <!-- Hauptüberschrift der Seite -->
     <h1>Random Color Generator</h1>
 
+    <!-- 
+      Dieser Div-Container zeigt die generierten Farben
+      in drei verschiedenen Formaten an:
+      - HEX (Hexadezimal): Standard für CSS/HTML
+      - RGB (Red Green Blue): Additives Farbmodell
+      - HSL (Hue Saturation Lightness): Intuitives Farbmodell
+    -->
     <div>
+      <!-- HEX-Format Anzeige -->
       <p>
         HEX: <span id="hex">#000000</span>
         <button onclick="copy('hex', this)">Copy</button>
       </p>
+
+      <!-- RGB-Format Anzeige -->
       <p>
         RGB: <span id="rgb">rgb(0,0,0)</span>
         <button onclick="copy('rgb', this)">Copy</button>
       </p>
+
+      <!-- HSL-Format Anzeige -->
       <p>
         HSL: <span id="hsl">hsl(0,0%,0%)</span>
         <button onclick="copy('hsl', this)">Copy</button>
       </p>
     </div>
 
+    <!-- Button zum Generieren einer neuen Farbe -->
     <button onclick="getColor()">Generate New Color</button>
 
     <script>
+      // =====================================================
+      // JAVASCRIPT-CODE FÜR DIE INTERAKTIVITÄT
+      // =====================================================
+
+      /**
+       * Funktion: getColor()
+       *
+       * Diese asynchrone Funktion kommuniziert mit unserem Backend-Server,
+       * um eine neue zufällige Farbe zu erhalten.
+       *
+       * Ablauf:
+       * 1. Sende HTTP GET-Request an die API
+       * 2. Warte auf die Antwort (await)
+       * 3. Konvertiere die Antwort in JSON
+       * 4. Aktualisiere die Anzeige mit den neuen Farbwerten
+       * 5. Ändere die Hintergrundfarbe der Seite
+       *
+       * Keyword 'async': Markiert die Funktion als asynchron
+       * Keyword 'await': Wartet auf das Versprechen (Promise)
+       */
       async function getColor() {
+        // Schritt 1: Sende Anfrage an unseren API-Endpunkt
+        // fetch() ist eine moderne Browser-API für HTTP-Requests
         const response = await fetch("http://localhost:3000/api/color/random");
+
+        // Schritt 2: Parse die JSON-Antwort
+        // Die Server-Antwort ist ein JSON-String, den wir in ein JS-Objekt umwandeln
         const color = await response.json();
 
+        // Schritt 3: Aktualisiere die Textinhalte der HTML-Elemente
+        // getElementById() findet das Element mit der angegebenen ID
+        // textContent setzt den Textinhalt des Elements
         document.getElementById("hex").textContent = color.hex;
         document.getElementById("rgb").textContent = color.rgb;
         document.getElementById("hsl").textContent = color.hsl;
+
+        // Schritt 4: Ändere die Hintergrundfarbe der gesamten Seite
+        // Dies demonstriert die generierte Farbe visuell
         document.body.style.backgroundColor = color.hex;
       }
 
+      /**
+       * Funktion: copy(format, button)
+       *
+       * Kopiert den Farbwert in das System-Clipboard (Zwischenablage)
+       * und gibt dem Benutzer visuelles Feedback.
+       *
+       * @param {string} format - Die ID des Elements (z.B. 'hex', 'rgb', 'hsl')
+       * @param {HTMLButtonElement} button - Das Button-Element, das geklickt wurde
+       *
+       * UX-Pattern: Feedback geben!
+       * Der Button zeigt temporär "Copied!" an, damit der Benutzer weiß,
+       * dass die Aktion erfolgreich war.
+       */
       function copy(format, button) {
+        // Schritt 1: Hole den Text aus dem entsprechenden <span>-Element
         const text = document.getElementById(format).textContent;
+
+        // Schritt 2: Kopiere den Text in die Zwischenablage
+        // navigator.clipboard ist eine moderne Browser-API (benötigt HTTPS oder localhost)
         navigator.clipboard.writeText(text);
 
-        // Better UX: Change button text instead of alert
+        // Schritt 3: UX-Verbesserung - Zeige Feedback an
+        // Merke dir den ursprünglichen Button-Text
         const originalText = button.textContent;
+
+        // Ändere den Button-Text zu "Copied!"
         button.textContent = "Copied!";
+
+        // Schritt 4: Stelle den ursprünglichen Text nach 2 Sekunden wieder her
+        // setTimeout() führt eine Funktion nach einer bestimmten Zeit aus (in Millisekunden)
         setTimeout(() => {
           button.textContent = originalText;
-        }, 2000);
+        }, 2000); // 2000ms = 2 Sekunden
       }
 
+      // =====================================================
+      // INITIALISIERUNG BEIM LADEN DER SEITE
+      // =====================================================
+
+      // Rufe getColor() sofort auf, wenn die Seite geladen wird
+      // So sieht der Benutzer direkt eine Farbe, ohne auf den Button klicken zu müssen
       getColor();
     </script>
   </body>
