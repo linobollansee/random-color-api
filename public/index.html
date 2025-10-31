@@ -9,15 +9,15 @@
     <div>
       <p>
         HEX: <span id="hex">#000000</span>
-        <button onclick="copy('hex')">Copy</button>
+        <button onclick="copy('hex', this)">Copy</button>
       </p>
       <p>
         RGB: <span id="rgb">rgb(0,0,0)</span>
-        <button onclick="copy('rgb')">Copy</button>
+        <button onclick="copy('rgb', this)">Copy</button>
       </p>
       <p>
         HSL: <span id="hsl">hsl(0,0%,0%)</span>
-        <button onclick="copy('hsl')">Copy</button>
+        <button onclick="copy('hsl', this)">Copy</button>
       </p>
     </div>
 
@@ -34,10 +34,16 @@
         document.body.style.backgroundColor = color.hex;
       }
 
-      function copy(format) {
+      function copy(format, button) {
         const text = document.getElementById(format).textContent;
         navigator.clipboard.writeText(text);
-        alert("Copied!");
+
+        // Better UX: Change button text instead of alert
+        const originalText = button.textContent;
+        button.textContent = "Copied!";
+        setTimeout(() => {
+          button.textContent = originalText;
+        }, 2000);
       }
 
       getColor();
