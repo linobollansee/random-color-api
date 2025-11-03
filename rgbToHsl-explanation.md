@@ -357,10 +357,9 @@ Each component (R, G, B) controls 120° (1/3) of the color wheel when it's domin
 4. Delta: `d = 1.0 - 0.753 = 0.247`
 5. Saturation: Since `l > 0.5`:
    - `s = 0.247 / (2 - 1.0 - 0.753) = 0.247 / 0.247 = 1.0` (100%)
-6. Hue: `max === r`, and `g >= b`, so:
-   - `h = ((0.753 - 0.796) / 0.247 + 0) / 6 = -0.174 / 0.247 / 6 ≈ 0.986`
-   - Wait, that's not right. Let me recalculate:
-   - `g < b`, so: `h = ((0.753 - 0.796) / 0.247 + 6) / 6 = (-0.043 / 0.247 + 6) / 6`
+6. Hue: `max === r`, and `g < b`, so we add 6:
+   - `h = ((0.753 - 0.796) / 0.247 + 6) / 6`
+   - `h = ((-0.043 / 0.247) + 6) / 6`
    - `h = (5.826) / 6 = 0.971` (350°)
 
 **Output:** `hsl(350, 100%, 88%)` ✅
